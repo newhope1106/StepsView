@@ -97,7 +97,7 @@ public class StepsView extends FrameLayout{
 
         mStepTextColor = res.getColor(R.color.default_text_color);
 
-        mStepTextSize = DisplayUtil.px2sp(context, 128);
+        mStepTextSize = DisplayUtil.sp2px(context, 18);
     }
 
     /**
