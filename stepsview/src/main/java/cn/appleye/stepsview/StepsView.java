@@ -270,6 +270,16 @@ public class StepsView extends FrameLayout{
             splitLineView.setImageResource(R.drawable.split_line_enable);
         }
 
+        //所有大于当前步骤的，设置为未完成状态
+        for(int i=stepIndex+1; i<mStepsCount; i++) {
+            TextImageView stepImageView = mStepViews.get(i);
+            stepImageView.setImageResource(R.drawable.step_disable);
+            stepImageView.setText((i+1) + "");
+
+            ImageView splitLineView = mSplitLines.get(i-1);
+            splitLineView.setImageResource(R.drawable.split_line_disable);
+        }
+
         //当前步骤正在进行时
         TextImageView stepImageView = mStepViews.get(stepIndex);
         stepImageView.setText((stepIndex+1) + "");
