@@ -23,7 +23,6 @@ mStepsView.setStepChangedListener(new StepsView.OnStepChangedListener(){
 	public void onStepChanged(int stepIndex){
 
 	}
-}
 });
 
 //mStepsView.setCurrentStep(步骤);//可以直接跳转到某一步
