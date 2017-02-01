@@ -26,6 +26,7 @@ mStepsView.setStepChangedListener(new StepsView.OnStepChangedListener(){
 }
 });
 
+//mStepsView.setCurrentStep(步骤);//可以直接跳转到某一步
 mNextView = findViewById(R.id.next_step_view);
 
 mNextView.setOnClickListener(new View.OnClickListener() {
@@ -45,7 +46,7 @@ mNextView.setOnClickListener(new View.OnClickListener() {
 @Website : https://github.com/newhope1106
 
 # License
-Copyright 2015-2016 Liu Liaopu
+Copyright 2016-2017 Liu Liaopu
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
