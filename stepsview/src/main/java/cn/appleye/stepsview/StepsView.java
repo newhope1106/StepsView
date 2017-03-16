@@ -2,6 +2,10 @@ package cn.appleye.stepsview;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -80,6 +84,11 @@ public class StepsView extends FrameLayout{
      * */
     private int mSplitLineHeight = -1;
 
+    /**
+     * 下三角颜色
+     * */
+    private int mDownTriangleColor;
+
     public StepsView(Context context) {
         this(context, null);
     }
@@ -90,6 +99,10 @@ public class StepsView extends FrameLayout{
 
     public StepsView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs,R.styleable.steps_view);
+        mDownTriangleColor = typedArray.getColor(R.styleable.steps_view_down_triangle_color, 0xffffffff);
+        typedArray.recycle();
 
         Resources res = context.getResources();
         mMarginLeftRightSide = res.getDimensionPixelOffset(R.dimen.margin_left_right_side);
@@ -174,6 +187,7 @@ public class StepsView extends FrameLayout{
 
     @Override
     public void onLayout(boolean changed, int left, int top, int right, int bottom){
+        super.onLayout(changed, left, top, right, bottom);
         int width = right - left;
         int height = bottom - top;
 
@@ -284,6 +298,8 @@ public class StepsView extends FrameLayout{
         TextImageView stepImageView = mStepViews.get(stepIndex);
         stepImageView.setText((stepIndex+1) + "");
         stepImageView.setImageResource(R.drawable.step_doing);
+
+        invalidate();
     }
 
     /**
@@ -300,6 +316,36 @@ public class StepsView extends FrameLayout{
                 splitLineView.setImageResource(R.drawable.split_line_enable);
             }
         }
+    }
+
+    @Override
+    public void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+
+        int selectedIndex = mCurrentStepIndex >= mStepsCount ? mStepsCount - 1 : mCurrentStepIndex;
+
+        View childView = mStepViews.get(selectedIndex);
+
+        if(childView == null) {
+            return;
+        }
+
+        int height = getHeight();
+        int left = childView.getLeft();
+
+        /*下三角高度*/
+        int downTrian = (getHeight() - mStepViewHeight) /2;
+
+        Path path = new Path();
+        path.moveTo(left + mStepViewWidth/2, height - downTrian);
+        path.lineTo(left + mStepViewWidth/2 - downTrian, height);
+        path.lineTo(left + mStepViewWidth/2 + downTrian, height);
+        path.close();
+
+        Paint paint = new Paint();
+        paint.setColor(mDownTriangleColor);
+
+        canvas.drawPath(path, paint);
     }
 
     public interface OnStepChangedListener{
